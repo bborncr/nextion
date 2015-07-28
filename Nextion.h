@@ -58,9 +58,9 @@ class Nextion{
 
   boolean setComponentValue(String component, int value);
 
-  boolean ack(void);
+  //boolean ack(void);//Deprecated
 
-  const char* _ack(void);
+  boolean ack(void);
 
   unsigned int getComponentValue(String component);
 
