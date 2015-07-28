@@ -194,6 +194,7 @@ void Nextion::sendCommand(const char* cmd){
 boolean Nextion::nextionInit(const char* pageId){
   String page = "page " + String(pageId);
   sendCommand("");
+  ack();
   sendCommand(page.c_str());
   delay(100);
   return ack();
