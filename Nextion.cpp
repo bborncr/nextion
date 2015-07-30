@@ -165,20 +165,20 @@ boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, in
 	
 	} else { // vertical
 	value = map(value, 0, 100, 0, maxHeight);
-	y = y - value;
+	offset2 = y;	
+	y = y + maxHeight - value;
 	w1 = maxWidth;
 	h1 = value;
 	w2 = maxWidth;
 	h2 = maxHeight - value;
 	offset1 = x;
-	offset2 = y - maxHeight - value;
 	}
 	
 	String wipe = "picq " + String(x) + "," + String(y) + "," + String(w1) + "," + String(h1) + "," + String(fullPictureID);
 	sendCommand(wipe.c_str());
 	wipe = "picq " + String(offset1) + "," + String(offset2) + "," + String(w2) + "," + String(h2) + "," + String(emptyPictureID);
 	sendCommand(wipe.c_str());
-return ack();
+	return ack();
 }
 
 /*
