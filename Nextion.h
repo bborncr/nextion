@@ -52,7 +52,7 @@ class Nextion{
   Nextion(){};//Empty contructor
   Nextion(SoftwareSerial &next, uint32_t baud);//Constructor
 
-  void buttonToogleEvent(boolean &buttonState, String buttonId ,uint8_t picDefualtId, uint8_t picPressedId);
+  void buttonToggle(boolean &buttonState, String buttonId ,uint8_t picDefualtId, uint8_t picPressedId);
 
   uint8_t buttonOnOff(String find_component, String unknown_component, uint8_t pin, int btn_prev_state);
 
@@ -64,14 +64,15 @@ class Nextion{
 
   unsigned int getComponentValue(String component);
 
-  boolean setComponentText(const char *component, const char *txt);
+  boolean setComponentText(const char *component, String txt);
+  
+  boolean updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation=0);
 
-
-  String listenNextion(unsigned long timeOut);
+  String listen(unsigned long timeOut=100);
 
   void sendCommand(const char* cmd);
 
-  boolean nextionInit(const char* pageId);
+  boolean init(const char* pageId = "0");
 
 };
 #endif

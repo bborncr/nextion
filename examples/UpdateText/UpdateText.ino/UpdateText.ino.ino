@@ -22,8 +22,12 @@ void setup() {
 }
 
 void loop() {
-  String message = myNextion.listen(); //check for message
-  if(message != ""){ // if a message is received...
-    Serial.println(message); //...print it out
-  }
+
+  myNextion.setComponentText("t0", "Hello");
+  delay(1000);
+  int value = 1234;
+  myNextion.setComponentText("t0", String(value));
+  delay(1000);
+  
 }
+

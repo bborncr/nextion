@@ -1,14 +1,11 @@
 /*
 HMI Nextion Library
-Itead NX4827T043_011
-http://imall.itead.cc/nextion-nx2432t043.html
 
 Bentley Born
 bentley@crcibernetica.com
 
 Ricardo Mena C
 ricardo@crcibernetica.com
-
 
 http://crcibernetica.com
 
@@ -46,7 +43,7 @@ Nextion::Nextion(SoftwareSerial &next, uint32_t baud): nextion(&next){
   flushSerial();
 }
 
-void Nextion::buttonToogleEvent(boolean &buttonState, String buttonId ,uint8_t picDefualtId, uint8_t picPressedId){
+void Nextion::buttonToggle(boolean &buttonState, String buttonId ,uint8_t picDefualtId, uint8_t picPressedId){
   String tempStr = "";
   if (buttonState) {
     tempStr = buttonId + ".picc="+String(picDefualtId);//Select this picture
@@ -143,12 +140,48 @@ unsigned int Nextion::getComponentValue(String component){
   return value;
 }//get_component_value */
 
-boolean Nextion::setComponentText(const char *component, const char *txt){
+boolean Nextion::setComponentText(const char *component, String txt){
   String componentText = String(component) + ".txt=\"" + String(txt) + "\"";//Set Component text
   sendCommand(componentText.c_str());
   return ack();
 }//end set_component_txt */
 
+boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation){
+	int w1 = 0;
+	int h1 = 0;
+	int w2 = 0;
+	int h2 = 0;
+	int offset1 = 0;
+	int offset2 = 0;
+
+	if(orientation == 0){ // horizontal
+	value = map(value, 0, 100, 0, maxWidth);
+	w1 = value;
+	h1 = maxHeight;
+	w2 = maxWidth - value;
+	h2 = maxHeight;
+	offset1 = x + value;
+	offset2 = y;
+	
+	} else { // vertical
+	value = map(value, 0, 100, 0, maxHeight);
+	y = y - value;
+	w1 = maxWidth;
+	h1 = value;
+	w2 = maxWidth;
+	h2 = maxHeight - value;
+	offset1 = x;
+	offset2 = y - maxHeight - value;
+	}
+	
+	String wipe = "picq " + String(x) + "," + String(y) + "," + String(w1) + "," + String(h1) + "," + String(fullPictureID);
+	sendCommand(wipe.c_str());
+	wipe = "picq " + String(offset1) + "," + String(offset2) + "," + String(w2) + "," + String(h2) + "," + String(emptyPictureID);
+	sendCommand(wipe.c_str());
+return ack();
+}
+
+/*
 String Nextion::getComponentText(const char* component, uint32_t timeOut){
   String tempStr = "get " + String(component);
   sendCommand(tempStr);
@@ -162,7 +195,9 @@ String Nextion::getComponentText(const char* component, uint32_t timeOut){
   return tempStr;
 }//getComponentText
 
-String Nextion::listenNextion(unsigned long timeOut){
+*/
+
+String Nextion::listen(unsigned long timeOut){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
   String cmd = "";//Clean temporal
   uint8_t ff = 0;
@@ -197,7 +232,7 @@ void Nextion::sendCommand(const char* cmd){
   nextion->write(0xFF);
 }//end sendCommand
 
-boolean Nextion::nextionInit(const char* pageId){
+boolean Nextion::init(const char* pageId){
   String page = "page " + String(pageId);//Page
   sendCommand("");
   ack();
