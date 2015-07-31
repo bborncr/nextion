@@ -13,7 +13,7 @@ Nextion KEYWORD1 Nextion
 buttonToggleEvent	KEYWORD2
 buttonOnOff		KEYWORD2
 setComponentValue	KEYWORD2
-ack			KEYWORD2
+ack					KEYWORD2
 getComponentValue	KEYWORD2
 setComponentText	KEYWORD2
 listen			KEYWORD2
