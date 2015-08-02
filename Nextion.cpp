@@ -37,29 +37,27 @@ http://crcibernetica.com
 
 #include "Nextion.h"
 
-
 Nextion::Nextion(SoftwareSerial &next, uint32_t baud): nextion(&next){
   nextion->begin(baud);
   flushSerial();
 }
 
-void Nextion::buttonToggle(boolean &buttonState, String buttonId ,uint8_t picDefualtId, uint8_t picPressedId){
+void Nextion::buttonToggle(boolean &buttonState, String objName, uint8_t picDefualtId, uint8_t picSelected){
   String tempStr = "";
   if (buttonState) {
-    tempStr = buttonId + ".picc="+String(picDefualtId);//Select this picture
+    tempStr = objName + ".picc="+String(picDefualtId);//Select this picture
     sendCommand(tempStr.c_str());
-    tempStr = "ref "+buttonId;//Refresh component
+    tempStr = "ref "+objName;//Refresh component
     sendCommand(tempStr.c_str());
     buttonState = false;
   } else {
-    tempStr = buttonId + ".picc="+String(picPressedId);//Select this picture
+    tempStr = objName + ".picc="+String(picSelected);//Select this picture
     sendCommand(tempStr.c_str());
-    tempStr = "ref "+buttonId;//Refresh this component
+    tempStr = "ref "+objName;//Refresh this component
     sendCommand(tempStr.c_str());
     buttonState = true;
   }
 }//end buttonPressed
-
 
 uint8_t Nextion::buttonOnOff(String find_component, String unknown_component, uint8_t pin, int btn_prev_state){  
   uint8_t btn_state = btn_prev_state;
@@ -81,18 +79,6 @@ boolean Nextion::setComponentValue(String component, int value){
   boolean acki = ack();
   return acki;
 }//set_component_value
-
-/*boolean Nextion::ack(void){//Deprecated
-  uint8_t bytes[4] = {0};
-  nextion->setTimeout(20);
-  if (sizeof(bytes) != nextion->readBytes((char *)bytes, sizeof(bytes))){
-    return false;
-  }//end if  
-  if((bytes[0]==0x00)&&(bytes[1]==0xFF)&&(bytes[2]==0xFF)&&(bytes[3]==0xFF)){
-    return false;//Somethings goes wrong
-  }//end if 
-  return true;
-}//end ack*/
 
 boolean Nextion::ack(void){
   /* CODE+END*/
@@ -140,8 +126,8 @@ unsigned int Nextion::getComponentValue(String component){
   return value;
 }//get_component_value */
 
-boolean Nextion::setComponentText(const char *component, String txt){
-  String componentText = String(component) + ".txt=\"" + String(txt) + "\"";//Set Component text
+boolean Nextion::setComponentText(String component, String txt){
+  String componentText = component + ".txt=\"" + String(txt) + "\"";//Set Component text
   sendCommand(componentText.c_str());
   return ack();
 }//end set_component_txt */
@@ -163,7 +149,7 @@ boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, in
 	offset1 = x + value;
 	offset2 = y;
 	
-	} else { // vertical
+	}else{ // vertical
 	value = map(value, 0, 100, 0, maxHeight);
 	offset2 = y;	
 	y = y + maxHeight - value;
@@ -172,34 +158,33 @@ boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, in
 	w2 = maxWidth;
 	h2 = maxHeight - value;
 	offset1 = x;
-	}
+	}//end if
 	
 	String wipe = "picq " + String(x) + "," + String(y) + "," + String(w1) + "," + String(h1) + "," + String(fullPictureID);
 	sendCommand(wipe.c_str());
 	wipe = "picq " + String(offset1) + "," + String(offset2) + "," + String(w2) + "," + String(h2) + "," + String(emptyPictureID);
 	sendCommand(wipe.c_str());
+
 	return ack();
-}
 
-/*
-String Nextion::getComponentText(const char* component, uint32_t timeOut){
-  String tempStr = "get " + String(component);
-  sendCommand(tempStr);
-  tempStr = listenNextion(timeOut);
+}//end updateProgressBar
+
+String Nextion::getComponentText(String component, uint32_t timeOut){
+  String tempStr = "get " + component + ".txt";
+  sendCommand(tempStr.c_str());
+
+  tempStr = listen(timeOut);
   if(tempStr.startsWith("70 ")){
-    tempStr = tempStr.substring(4, tempStr.lenght-15);//Cut the begining and End text
+    tempStr = tempStr.substring(4, tempStr.length()-15);//Cut the begining and End text
   }else{
-	//
-  }//end if
-
+	return "1a";
+  }//end if*/
   return tempStr;
 }//getComponentText
 
-*/
-
 String Nextion::listen(unsigned long timeOut){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
-  String cmd = "";//Clean temporal
+  String cmd = "";
   uint8_t ff = 0;
   uint8_t i = 0;
   char buff[10] = {0};
