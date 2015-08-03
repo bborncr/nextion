@@ -170,12 +170,24 @@ boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, in
 }//end updateProgressBar
 
 String Nextion::getComponentText(String component, uint32_t timeOut){
-  String tempStr = "get " + component + ".txt";
+  String tempStr = "get " + String(component) + ".txt";
   sendCommand(tempStr.c_str());
-
-  tempStr = listen(timeOut);
-  if(tempStr.startsWith("70 ")){
-    tempStr = tempStr.substring(4, tempStr.length()-15);//Cut the begining and End text
+  tempStr = "";
+  unsigned long start = millis();
+  uint8_t ff = 0;//end message
+  while((millis()-start < timeOut)){
+    if(nextion->available()){
+      char b = nextion->read();
+      if(String(b, HEX) == "ffff"){ff++;}
+       tempStr += String(b);
+	   if(ff == 3){//End line
+		 ff = 0;
+		 break;
+	   }//end if
+    }//end if
+  }//end while
+  if(tempStr.startsWith("p")){//0x70
+	tempStr = tempStr.substring(1, tempStr.length()-3);
   }else{
 	return "1a";
   }//end if*/
