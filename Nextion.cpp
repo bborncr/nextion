@@ -169,13 +169,14 @@ boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, in
 
 }//end updateProgressBar
 
-String Nextion::getComponentText(String component, uint32_t timeOut){
-  String tempStr = "get " + String(component) + ".txt";
+String Nextion::getComponentText(String component, uint32_t timeout){
+  String tempStr = "get " + component + ".txt";
   sendCommand(tempStr.c_str());
   tempStr = "";
-  unsigned long start = millis();
+  tempStr = listen(timeout);
+  /*unsigned long start = millis();
   uint8_t ff = 0;//end message
-  while((millis()-start < timeOut)){
+  while((millis()-start < timeout)){
     if(nextion->available()){
       char b = nextion->read();
       if(String(b, HEX) == "ffff"){ff++;}
@@ -194,14 +195,77 @@ String Nextion::getComponentText(String component, uint32_t timeOut){
   return tempStr;
 }//getComponentText
 
-String Nextion::listen(unsigned long timeOut){
+String Nextion::listen(unsigned long timeout){//returns generic
+  //TODO separar todos los eventos 0x65 0x66 0x67 0x68
+  String cmd = "";
+  uint8_t ff = 0;
+  uint8_t i = 0;
+  uint8_t indicatorFlag = 0;//None
+  char buff[255] = {0};//1 + Maximun value 30 + 3
+  unsigned long start = millis();
+  while((millis()-start < timeout)){
+    if(nextion->available()){
+      char b = nextion->read();
+      buff[i] = b;
+      i++;
+      if(String(b, HEX) == "ffff"){ff++;}
+	  switch (buff[0]) {
+	  case 'e'://0x65   Same than default -.-
+		cmd += String(b, HEX);
+		cmd += " ";
+		break;
+	  case 'f'://0x66
+		if(ff == 3){/**/
+		  return String(buff[1], DEC);
+		}//end if
+		break;
+	  case ('g' || 'h')://0x67
+		if(ff == 3){
+		  cmd = String(buff[2], DEC) + "," + String(buff[4], DEC) +","+ String(buff[5], DEC);
+		  return cmd;
+		}//end if
+		break;
+	  case 'p'://0x70
+		cmd += String(b);
+		if(ff == 3){
+		  if(cmd.startsWith("p")){//0x70
+			cmd = cmd.substring(1, cmd.length()-3);
+			cmd = "70 " + cmd;
+		  }else{
+			return "1a";
+		  }//end if
+		}//end if
+		break;
+	  default: 
+		cmd += String(b, HEX);
+		cmd += " ";
+	  }//end switch
+      if(ff == 3){//End line
+        ff = 0;
+        break;
+      }//end if
+    }//end if
+  }//end while
+  /*  if(buff[0] == 'p'){//0x70
+	if((String(buff[31], HEX) == "ffff")&&(String(buff[32], HEX) == "ffff")(String(buff[33], HEX) == "ffff")){//TODO Cambiar las posiciones del buffer para 0x66
+	  for(uint8_t j = 1; j<31; j++){
+		cmd += String(buff[j]);
+	  }//end if
+	}//end if
+	}//end if*/
+  flushSerial();
+  return cmd;  
+
+}
+
+/*String Nextion::listen(unsigned long timeout){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
   String cmd = "";
   uint8_t ff = 0;
   uint8_t i = 0;
   char buff[10] = {0};
   unsigned long start = millis();
-  while((millis()-start < timeOut)){
+  while((millis()-start < timeout)){
     if(nextion->available()){
       char b = nextion->read();
       buff[i] = b;
@@ -217,7 +281,13 @@ String Nextion::listen(unsigned long timeOut){
   }//end while
   flushSerial();
   return cmd;
-}//end listen_nextion
+}//end listen_nextion*/
+
+/*uint8_t Nextion::pageId(){
+  sendCommand("sendme");
+  String pagId = listenNextionGeneric();
+  return pagId.toInt();
+  }//pageId*/
 
 void Nextion::sendCommand(const char* cmd){
   /*while (nextion->available()){
