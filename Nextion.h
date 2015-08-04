@@ -68,11 +68,14 @@ class Nextion{
   
   boolean updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation=0);
 
-  String getComponentText(String component, uint32_t timeOut);
+  String getComponentText(String component, uint32_t timeout = 100);
 
-  String listen(unsigned long timeOut=100);
+  String listen(unsigned long timeout=100);
+  //  String listenNextionGeneric(unsigned long timeout=100);
 
   void sendCommand(const char* cmd);
+
+  uint8_t pageId(void);
 
   boolean init(const char* pageId = "0");
 
