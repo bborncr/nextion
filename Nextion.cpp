@@ -216,7 +216,7 @@ String Nextion::listen(unsigned long timeout){//returns generic
 		cmd += " ";
 		break;
 	  case 'f'://0x66
-		if(ff == 3){/**/
+		if(ff == 3){
 		  return String(buff[1], DEC);
 		}//end if
 		break;
@@ -244,9 +244,9 @@ String Nextion::listen(unsigned long timeout){//returns generic
 		}//end if
 		break;
 	  default: 
-		/*cmd += String(b, HEX);
-		if(ff == 3){break;}//end if
-		cmd += " ";//*/
+		//	cmd += String(b, HEX);
+		//if(ff == 3){break;}//end if
+		//cmd += " ";//
 		break;
 	  }//end switch
       if(ff == 3){//End line
@@ -258,7 +258,7 @@ String Nextion::listen(unsigned long timeout){//returns generic
   flushSerial();
   return cmd;  
 
-}
+}//*/
 
 /*String Nextion::listen(unsigned long timeout){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
@@ -287,12 +287,18 @@ String Nextion::listen(unsigned long timeout){//returns generic
 
 uint8_t Nextion::pageId(void){
   sendCommand("sendme");
+  int a = -1;
   String pagId = listen();
-  return pagId.toInt();
+  if(pagId != ""){
+	Serial.println(pagId);
+	return a;//pagId.toInt();
+  }
+  return -1;
+  
 }//pageId*/
 
 void Nextion::sendCommand(const char* cmd){
-  /*while (nextion->available()){
+  while (nextion->available()){
 	nextion->read();
   }//end while*/
   nextion->print(cmd);
