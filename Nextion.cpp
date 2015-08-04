@@ -118,7 +118,7 @@ unsigned int Nextion::getComponentValue(String component){
   uint8_t temp[8] = {0};
   nextion->setTimeout(20);
   if (sizeof(temp) != nextion->readBytes((char *)temp, sizeof(temp))){
-    return 0;
+    return -1;
   }//end if
   if((temp[0]==(0x71))&&(temp[5]==0xFF)&&(temp[6]==0xFF)&&(temp[7]==0xFF)){
     value = (temp[4] << 24) | (temp[3] << 16) | (temp[2] << 8) | (temp[1]);//Little-endian convertion
@@ -196,22 +196,23 @@ String Nextion::getComponentText(String component, uint32_t timeout){
 }//getComponentText
 
 String Nextion::listen(unsigned long timeout){//returns generic
-  //TODO separar todos los eventos 0x65 0x66 0x67 0x68
+  //TODO separar todos los eventos 0x65 0x66 0x67 0x68;
   String cmd = "";
   uint8_t ff = 0;
   uint8_t i = 0;
   uint8_t indicatorFlag = 0;//None
   char buff[255] = {0};//1 + Maximun value 30 + 3
   unsigned long start = millis();
-  while((millis()-start < timeout)){
-    if(nextion->available()){
+  if(nextion->available()){
+	while((millis()-start < timeout)){
       char b = nextion->read();
       buff[i] = b;
       i++;
-      if(String(b, HEX) == "ffff"){ff++;}
+      if(String(b, HEX) == "ffff"){ff++;}//end if
 	  switch (buff[0]) {
 	  case 'e'://0x65   Same than default -.-
 		cmd += String(b, HEX);
+		if(ff == 3){break;}//end if
 		cmd += " ";
 		break;
 	  case 'f'://0x66
@@ -219,7 +220,13 @@ String Nextion::listen(unsigned long timeout){//returns generic
 		  return String(buff[1], DEC);
 		}//end if
 		break;
-	  case ('g' || 'h')://0x67
+	  case 'g'://0x67
+		if(ff == 3){
+		  cmd = String(buff[2], DEC) + "," + String(buff[4], DEC) +","+ String(buff[5], DEC);
+		  return cmd;
+		}//end if
+		break;
+	  case 'h'://0x68
 		if(ff == 3){
 		  cmd = String(buff[2], DEC) + "," + String(buff[4], DEC) +","+ String(buff[5], DEC);
 		  return cmd;
@@ -237,22 +244,17 @@ String Nextion::listen(unsigned long timeout){//returns generic
 		}//end if
 		break;
 	  default: 
-		cmd += String(b, HEX);
-		cmd += " ";
+		/*cmd += String(b, HEX);
+		if(ff == 3){break;}//end if
+		cmd += " ";//*/
+		break;
 	  }//end switch
       if(ff == 3){//End line
-        ff = 0;
+		//ff = 0;
         break;
       }//end if
-    }//end if
-  }//end while
-  /*  if(buff[0] == 'p'){//0x70
-	if((String(buff[31], HEX) == "ffff")&&(String(buff[32], HEX) == "ffff")(String(buff[33], HEX) == "ffff")){//TODO Cambiar las posiciones del buffer para 0x66
-	  for(uint8_t j = 1; j<31; j++){
-		cmd += String(buff[j]);
-	  }//end if
-	}//end if
-	}//end if*/
+	}//end while
+  }//end if
   flushSerial();
   return cmd;  
 
@@ -283,11 +285,11 @@ String Nextion::listen(unsigned long timeout){//returns generic
   return cmd;
 }//end listen_nextion*/
 
-/*uint8_t Nextion::pageId(){
+uint8_t Nextion::pageId(void){
   sendCommand("sendme");
-  String pagId = listenNextionGeneric();
+  String pagId = listen();
   return pagId.toInt();
-  }//pageId*/
+}//pageId*/
 
 void Nextion::sendCommand(const char* cmd){
   /*while (nextion->available()){
