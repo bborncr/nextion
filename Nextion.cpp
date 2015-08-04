@@ -290,8 +290,8 @@ uint8_t Nextion::pageId(void){
   int a = -1;
   String pagId = listen();
   if(pagId != ""){
-	Serial.println(pagId);
-	return a;//pagId.toInt();
+	//	Serial.println(pagId);
+	return pagId.toInt();
   }
   return -1;
   
