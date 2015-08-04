@@ -37,10 +37,17 @@ http://crcibernetica.com
 
 #include "Nextion.h"
 
+#if defined(USE_SOFTWARE_SERIAL)
 Nextion::Nextion(SoftwareSerial &next, uint32_t baud): nextion(&next){
   nextion->begin(baud);
   flushSerial();
 }
+#else
+Nextion::Nextion(HardwareSerial &next, uint32_t baud): nextion(&next){
+  nextion->begin(baud);
+  flushSerial();
+}
+#endif
 
 void Nextion::buttonToggle(boolean &buttonState, String objName, uint8_t picDefualtId, uint8_t picSelected){
   String tempStr = "";
