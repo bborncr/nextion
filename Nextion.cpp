@@ -258,6 +258,7 @@ String Nextion::listen(unsigned long timeout){//returns generic
   case 'p'://0x70
 	cmd = cmd.substring(1, cmd.length()-3);
 	cmd = "70 " + cmd;
+	return cmd;
 	break;
   default: 
 	//	cmd += String(b, HEX);
