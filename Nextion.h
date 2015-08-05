@@ -44,7 +44,7 @@ http://crcibernetica.com
 #include <Arduino.h>
 
 
-//#define USE_SOFTWARE_SERIAL //Comment this line for use  HardwareSerial
+#define USE_SOFTWARE_SERIAL //Comment this line for use  HardwareSerial
 
 
 #if defined(USE_SOFTWARE_SERIAL)
