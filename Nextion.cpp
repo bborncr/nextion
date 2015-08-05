@@ -208,7 +208,6 @@ String Nextion::listen(unsigned long timeout){//returns generic
   char _end = 0xff;//end of file x3
   String cmd;
   int countEnd = 0;
-  unsigned long start = millis();
 
   while(nextion->available()>0){
 	delay(10);
