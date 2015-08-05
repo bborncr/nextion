@@ -42,16 +42,30 @@ http://crcibernetica.com
 #define __NEXTION_H__
 
 #include <Arduino.h>
+
+
+#define USE_SOFTWARE_SERIAL //Comment this line for use  HardwareSerial
+
+
+#if defined(USE_SOFTWARE_SERIAL)
 #include <SoftwareSerial.h>
+#endif
 
 class Nextion{
  private:
   void flushSerial();
+#if defined(USE_SOFTWARE_SERIAL)
   SoftwareSerial *nextion;
+#else
+   HardwareSerial *nextion;
+#endif
  public:
-  Nextion(){};//Empty contructor
+    Nextion(){};//Empty contructor
+#if defined(USE_SOFTWARE_SERIAL)
   Nextion(SoftwareSerial &next, uint32_t baud);//Constructor
-
+#else
+  Nextion(HardwareSerial &next, uint32_t baud);//Constructor
+#endif
   void buttonToggle(boolean &buttonState, String objName, uint8_t picDefualtId, uint8_t picPressedId);
 
   uint8_t buttonOnOff(String find_component, String unknown_component, uint8_t pin, int btn_prev_state);
@@ -68,11 +82,14 @@ class Nextion{
   
   boolean updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation=0);
 
-  String getComponentText(String component, uint32_t timeOut);
+  String getComponentText(String component, uint32_t timeout = 100);
 
-  String listen(unsigned long timeOut=100);
+  String listen(unsigned long timeout=100);
+  //  String listenNextionGeneric(unsigned long timeout=100);
 
   void sendCommand(const char* cmd);
+
+  uint8_t pageId(void);
 
   boolean init(const char* pageId = "0");
 
