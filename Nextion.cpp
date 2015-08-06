@@ -223,7 +223,7 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end if
   }//end while
 
-  /*if(cmd != ""){
+ /* if(cmd != ""){
 	for(int o  = 0 ; o < cmd.length(); o++){
 	  Serial.print(cmd[o], HEX);
 	}
@@ -253,6 +253,7 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	break;
   case 'h'://0x68
 	cmd = String(cmd[2], DEC) + "," + String(cmd[4], DEC) +","+ String(cmd[5], DEC);
+	cmd = "68 " + cmd;	
 	return cmd;
 	break;
   case 'p'://0x70
