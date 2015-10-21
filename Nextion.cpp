@@ -78,7 +78,7 @@ uint8_t Nextion::buttonOnOff(String find_component, String unknown_component, ui
     //return -1;
   }//end if
   return btn_state;
-}
+}//end buttonOnOff
 
 boolean Nextion::setComponentValue(String component, int value){
   String compValue = component +".val=" + value;//Set component value
@@ -116,7 +116,7 @@ boolean Nextion::ack(void){
 	  return false;
     }//end switch
   }//end if
-}//end *\
+}//end
 
 unsigned int Nextion::getComponentValue(String component){
   String getValue = "get "+ component +".val";//Get componetn value
@@ -137,7 +137,7 @@ boolean Nextion::setComponentText(String component, String txt){
   String componentText = component + ".txt=\"" + txt + "\"";//Set Component text
   sendCommand(componentText.c_str());
   return ack();
-}//end set_component_txt */
+}//end set_component_txt
 
 boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation){
 	int w1 = 0;
@@ -223,13 +223,6 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end if
   }//end while
 
-  /*if(cmd != ""){
-	for(int o  = 0 ; o < cmd.length(); o++){
-	  Serial.print(cmd[o], HEX);
-	}
-	Serial.println();
-	}//*/
-
   String temp = "";
   switch (cmd[0]) {
   case 'e'://0x65   Same than default -.-
@@ -267,7 +260,8 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	return "";//
 	break;
   }//end switch	
-}//*/
+  return temp;
+}//end listen
 
 /*String Nextion::listen(unsigned long timeout){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
@@ -307,12 +301,12 @@ uint8_t Nextion::pageId(void){
   }
   return -1;
   
-}//pageId*/
+}//pageId
 
 void Nextion::sendCommand(const char* cmd){
   while (nextion->available()){
 	nextion->read();
-  }//end while*/
+  }//end while
   nextion->print(cmd);
   nextion->write(0xFF);
   nextion->write(0xFF);
