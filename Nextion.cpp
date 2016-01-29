@@ -237,8 +237,8 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end for
 	break;
   case 'f'://0x66
-	Serial.print(String(cmd[2], HEX));
-	return String(cmd[2], DEC);
+	//Serial.print(String(cmd[1], HEX));
+	return String(cmd[1], DEC);
 	break;
   case 'g'://0x67
 	cmd = String(cmd[2], DEC) + "," + String(cmd[4], DEC) +","+ String(cmd[5], DEC);
@@ -257,10 +257,10 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	//	cmd += String(b, HEX);
 	//if(ff == 3){break;}//end if
 	//cmd += " ";//
-	return "";//
+	return cmd;//
 	break;
   }//end switch	
-  return temp;
+  return "";
 }//end listen
 
 /*String Nextion::listen(unsigned long timeout){
@@ -294,7 +294,7 @@ uint8_t Nextion::pageId(void){
   int a = -1;
   String pagId = listen();
   //  Serial.print("ID = ");
-  //Serial.print(pagId[0], DEC);
+  //Serial.print(pagId);
   //Serial.println("<-");
   if(pagId != ""){
 	return pagId.toInt();
