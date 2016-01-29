@@ -26,6 +26,10 @@ void loop() {
   if(message != ""){ // if a message is received...
     Serial.println(message); //...print it out
   }
-
+  int value = analogRead(A0);
+  String data = "add 3,0," + String(value);
+  myNextion.sendCommand(data.c_str());
+ // myNextion.sendCommand("ref S0");
+  delay(1000);
   
 }
