@@ -78,7 +78,7 @@ uint8_t Nextion::buttonOnOff(String find_component, String unknown_component, ui
     //return -1;
   }//end if
   return btn_state;
-}
+}//end buttonOnOff
 
 boolean Nextion::setComponentValue(String component, int value){
   String compValue = component +".val=" + value;//Set component value
@@ -116,7 +116,7 @@ boolean Nextion::ack(void){
 	  return false;
     }//end switch
   }//end if
-}//end *\
+}//end
 
 unsigned int Nextion::getComponentValue(String component){
   String getValue = "get "+ component +".val";//Get componetn value
@@ -137,7 +137,7 @@ boolean Nextion::setComponentText(String component, String txt){
   String componentText = component + ".txt=\"" + txt + "\"";//Set Component text
   sendCommand(componentText.c_str());
   return ack();
-}//end set_component_txt */
+}//end set_component_txt
 
 boolean Nextion::updateProgressBar(int x, int y, int maxWidth, int maxHeight, int value, int emptyPictureID, int fullPictureID, int orientation){
 	int w1 = 0;
@@ -223,13 +223,6 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end if
   }//end while
 
-  /*if(cmd != ""){
-	for(int o  = 0 ; o < cmd.length(); o++){
-	  Serial.print(cmd[o], HEX);
-	}
-	Serial.println();
-	}//*/
-
   String temp = "";
   switch (cmd[0]) {
   case 'e'://0x65   Same than default -.-
@@ -244,8 +237,8 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end for
 	break;
   case 'f'://0x66
-	Serial.print(String(cmd[2], HEX));
-	return String(cmd[2], DEC);
+	//Serial.print(String(cmd[1], HEX));
+	return String(cmd[1], DEC);
 	break;
   case 'g'://0x67
 	cmd = String(cmd[2], DEC) + "," + String(cmd[4], DEC) +","+ String(cmd[5], DEC);
@@ -264,10 +257,11 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	//	cmd += String(b, HEX);
 	//if(ff == 3){break;}//end if
 	//cmd += " ";//
-	return "";//
+	return cmd;//
 	break;
   }//end switch	
-}//*/
+  return "";
+}//end listen
 
 /*String Nextion::listen(unsigned long timeout){
   //TODO separar todos los eventos 0x65 0x66 0x67 0x68
@@ -300,19 +294,19 @@ uint8_t Nextion::pageId(void){
   int a = -1;
   String pagId = listen();
   //  Serial.print("ID = ");
-  //Serial.print(pagId[0], DEC);
+  //Serial.print(pagId);
   //Serial.println("<-");
   if(pagId != ""){
 	return pagId.toInt();
   }
   return -1;
   
-}//pageId*/
+}//pageId
 
 void Nextion::sendCommand(const char* cmd){
   while (nextion->available()){
 	nextion->read();
-  }//end while*/
+  }//end while
   nextion->print(cmd);
   nextion->write(0xFF);
   nextion->write(0xFF);
