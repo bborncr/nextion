@@ -223,7 +223,6 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	}//end if
   }//end while
 
-<<<<<<< HEAD
  /* if(cmd != ""){
 	for(int o  = 0 ; o < cmd.length(); o++){
 	  Serial.print(cmd[o], HEX);
@@ -231,8 +230,6 @@ String Nextion::listen(unsigned long timeout){//returns generic
 	Serial.println();
 	}//*/
 
-=======
->>>>>>> 4ecc8e6778707d477938b3f5a74f648bf0781185
   String temp = "";
   switch (cmd[0]) {
   case 'e'://0x65   Same than default -.-
