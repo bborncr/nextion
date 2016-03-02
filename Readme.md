@@ -1,10 +1,10 @@
 A simple arduino library for the Itead Nextion HMI.
 
-Nextion LCD Touchscreen Tutorial for Arduino
+**Nextion LCD Touchscreen Tutorial for Arduino**
 
 http://openhardware.gridshield.net/home/nextion-lcd-getting-started-for-arduino
 
-Nextion LCD Touchscreen Library Functions
+**Nextion LCD Touchscreen Library Functions**
 
 http://openhardware.gridshield.net/home/nextion-example-code-functions
 
@@ -22,6 +22,7 @@ Remove the lines:
 `SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino`
 
 Add the following define to assign a hardware serial port to "nextion":
+
 `#define nextion Serial1`
 
 Note that you can replace "Serial1" with Serial or Serial2 or whatever Serial ports your particular Arduino has.
