@@ -17,6 +17,7 @@ In the file Nextion.h
 
 Remove the lines:
 `#include <SoftwareSerial.h>`
+
 `SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino`
 
 Add the following define to assign a hardware serial port to "nextion":
