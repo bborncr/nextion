@@ -15,13 +15,11 @@ In the file Nextion.h
 Comment out the following code (line 47): #define USE_SOFTWARE_SERIAL
 
 Remove the lines:
-<code>
-#include <SoftwareSerial.h>
-SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino
-</code>
+"#include <SoftwareSerial.h>"
+"SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino"
 
 Add the following define to assign a hardware serial port to "nextion":
-#define nextion Serial1
+"#define nextion Serial1"
 
 Note that you can replace "Serial1" with Serial or Serial2 or whatever Serial ports your particular Arduino has.
 
