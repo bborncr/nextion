@@ -9,17 +9,18 @@ Nextion LCD Touchscreen Library Functions
 http://openhardware.gridshield.net/home/nextion-example-code-functions
 
 NOTE: The examples using Software Serial to communicate with the Nextion.
-However, Hardwarre Serial can be used also:
+
+However, Hardware Serial can be used also:
 
 In the file Nextion.h
-Comment out the following code (line 47): #define USE_SOFTWARE_SERIAL
+`Comment out the following code (line 47): #define USE_SOFTWARE_SERIAL`
 
 Remove the lines:
-"#include <SoftwareSerial.h>"
-"SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino"
+`#include <SoftwareSerial.h>`
+`SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino`
 
 Add the following define to assign a hardware serial port to "nextion":
-"#define nextion Serial1"
+`#define nextion Serial1`
 
 Note that you can replace "Serial1" with Serial or Serial2 or whatever Serial ports your particular Arduino has.
 
