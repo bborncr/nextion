@@ -8,7 +8,7 @@ http://openhardware.gridshield.net/home/nextion-lcd-getting-started-for-arduino
 
 http://openhardware.gridshield.net/home/nextion-example-code-functions
 
-NOTE: The examples using Software Serial to communicate with the Nextion.
+NOTE: The examples use Software Serial to communicate with the Nextion.
 
 However, Hardware Serial can be used also:
 
