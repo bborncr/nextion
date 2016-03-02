@@ -19,6 +19,7 @@ Comment out the following code (line 47):
 `#define USE_SOFTWARE_SERIAL`
 
 Remove the lines:
+
 `#include <SoftwareSerial.h>`
 
 `SoftwareSerial nextion(2, 3);// Nextion TX to pin 2 and RX to pin 3 of Arduino`
