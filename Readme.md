@@ -1,4 +1,4 @@
-A simple arduino library for the Itead Nextion HMI.
+##A simple arduino library for the Itead Nextion HMI.
 
 **Nextion LCD Touchscreen Tutorial for Arduino**
 
