@@ -14,7 +14,9 @@ However, Hardware Serial can be used also:
 
 In the file Nextion.h
 
-`Comment out the following code (line 47): #define USE_SOFTWARE_SERIAL`
+Comment out the following code (line 47): 
+
+`#define USE_SOFTWARE_SERIAL`
 
 Remove the lines:
 `#include <SoftwareSerial.h>`
