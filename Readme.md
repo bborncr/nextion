@@ -13,6 +13,7 @@ NOTE: The examples using Software Serial to communicate with the Nextion.
 However, Hardware Serial can be used also:
 
 In the file Nextion.h
+
 `Comment out the following code (line 47): #define USE_SOFTWARE_SERIAL`
 
 Remove the lines:
