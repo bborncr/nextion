@@ -36,21 +36,26 @@ void loop() {
 
   String message = myNextion.listen();
 
-  if (message == "65 0 1 0 ffff ffff ffff"){
+  if (message == "65 0 1 0 ffff ffff ffff") {
     myNextion.buttonToggle(button1State, "b0", 0, 2);
-    }
-  if (message == "65 0 2 0 ffff ffff ffff"){
+  }
+  if (message == "65 0 2 0 ffff ffff ffff") {
     myNextion.buttonToggle(button2State, "b1", 0, 2);
-    }
-  
-  int sensor = analogRead(A0);
+  }
+
+  int sensor = 0;
+
+  for (int i = 0; i < 10 ; i ++) { // get average
+    sensor += analogRead(A0);
+  }
+  sensor = sensor / 10;
   if (abs(sensor - old_sensor_value) > 20) {
-  old_sensor_value = sensor;
-  
-  int scaled_value = map(sensor, 0, 1023, 0, 100); // always map value from 0 to 100
-  
-  myNextion.updateProgressBar(x,y,width,height,scaled_value,0,2,1); // update the progress bar
-  myNextion.setComponentText("t0", String(sensor));  // update text using original sensor value
-  
+    old_sensor_value = sensor;
+
+    int scaled_value = map(sensor, 0, 1023, 0, 100); // always map value from 0 to 100
+
+    myNextion.updateProgressBar(x, y, width, height, scaled_value, 0, 2, 1); // update the progress bar
+    myNextion.setComponentText("t0", String(sensor));  // update text using original sensor value
+
   }
 }
