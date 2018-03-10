@@ -301,16 +301,16 @@ String Nextion::listen(unsigned long timeout){//returns generic
 
 uint8_t Nextion::pageId(void){
   sendCommand("sendme");
-  int a = -1;
-  String pagId = "";
-  while(pageId == ""){
-	pageId = listen();
+  //  int a = -1;
+  String _pageId = "";
+  while(_pageId == ""){
+	_pageId = listen();
   }//end while
   //  Serial.print("ID = ");
   //Serial.print(pagId);
   //Serial.println("<-");
-  if(pagId != ""){
-	return pagId.toInt();
+  if(_pageId != ""){
+	return _pageId.toInt();
   }
   return -1;
   
