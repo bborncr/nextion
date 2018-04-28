@@ -120,7 +120,7 @@ boolean Nextion::ack(void){
 
 unsigned int Nextion::getComponentValue(String component){
   String getValue = "get "+ component +".val";//Get componetn value
-    unsigned int value = 0;
+    uint32_t value = 0;
   sendCommand(getValue.c_str());
   uint8_t temp[8] = {0};
   nextion->setTimeout(20);
@@ -180,7 +180,9 @@ String Nextion::getComponentText(String component, uint32_t timeout){
   String tempStr = "get " + component + ".txt";
   sendCommand(tempStr.c_str());
   tempStr = "";
-  tempStr = listen(timeout);
+  while(tempStr == ""){
+	tempStr = listen(timeout);
+  }//end while
   /*unsigned long start = millis();
   uint8_t ff = 0;//end message
   while((millis()-start < timeout)){
@@ -299,13 +301,16 @@ String Nextion::listen(unsigned long timeout){//returns generic
 
 uint8_t Nextion::pageId(void){
   sendCommand("sendme");
-  int a = -1;
-  String pagId = listen();
+  //  int a = -1;
+  String _pageId = "";
+  while(_pageId == ""){
+	_pageId = listen();
+  }//end while
   //  Serial.print("ID = ");
   //Serial.print(pagId);
   //Serial.println("<-");
-  if(pagId != ""){
-	return pagId.toInt();
+  if(_pageId != ""){
+	return _pageId.toInt();
   }
   return -1;
   
