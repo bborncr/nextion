@@ -4,22 +4,22 @@
 # Class
 #######################################
 
-Nextion KEYWORD1 Nextion
+Nextion	KEYWORD1 Nextion
 
 #######################################
 # Methods and Functions 
 #######################################	
 
 buttonToggleEvent	KEYWORD2
-buttonOnOff		KEYWORD2
+buttonOnOff	KEYWORD2
 setComponentValue	KEYWORD2
-ack					KEYWORD2
+ack	KEYWORD2
 getComponentValue	KEYWORD2
 setComponentText	KEYWORD2
-listen			KEYWORD2
-sendCommand		KEYWORD2
-init			KEYWORD2
-flushSerial		KEYWORD2
+listen	KEYWORD2
+sendCommand	KEYWORD2
+init	KEYWORD2
+flushSerial	KEYWORD2
 
 #######################################
 # Constants
